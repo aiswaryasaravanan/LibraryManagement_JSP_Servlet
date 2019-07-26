@@ -27,6 +27,8 @@ public class GetMyBook extends HttpServlet {
 				transactions=transactiondao.getMyBook((String) session.getAttribute("id"));
 			}else if(request.getAttribute("status").equals("past")) {
 				transactions=transactiondao.getMyPastBook((String) session.getAttribute("id"));
+			}else if(request.getAttribute("status").equals("renew")) {
+				transactions=transactiondao.getBookToRenew((String) session.getAttribute("id"));
 			}
 		}catch(Exception e) {
 			

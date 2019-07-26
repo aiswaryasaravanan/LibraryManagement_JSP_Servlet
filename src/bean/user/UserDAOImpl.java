@@ -7,6 +7,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+//import java.util.Iterator;
+
+//import com.adventnet.ds.query.Column;
+//import com.adventnet.ds.query.Criteria;
+//import com.adventnet.ds.query.QueryConstants;
+//import com.adventnet.ds.query.Table;
+//import com.adventnet.persistence.DataAccess;
+//import com.adventnet.persistence.DataAccessException;
+//import com.adventnet.persistence.DataObject;
+//import com.adventnet.persistence.Row;
 
 public class UserDAOImpl implements UserDAO{
 	
@@ -51,27 +61,9 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return users;
 	}
-	float fine;
-	public float getFine(String id) throws Exception {
-		String sql="select fineAmount from user where id=?";		//statement is enough
-		ResultSet rs=null;
-		try(Connection con=DBConnection.DataBaseConnection.initializeDB();PreparedStatement st=con.prepareStatement(sql)){
-			st.setString(1, id);
-			rs=st.executeQuery();
-			while(rs.next())
-					fine=rs.getFloat(1);
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
-		}finally {
-			rs.close();
-		}
-
-		return fine;
-	}
 	
 	public void setFine(String id,float amount) {
-		String sql="update user set fineAmount=(select fineAmount-? where id='"+id+"') where id='"+id+"'";
+		String sql="update user set fineAmount=(select fineAmount+? where id='"+id+"') where id='"+id+"'";
 		try(Connection con=DBConnection.DataBaseConnection.initializeDB();PreparedStatement st=con.prepareStatement(sql)){
 			st.setFloat(1, amount);
 			st.executeUpdate();
@@ -99,7 +91,17 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return false;
 	}
-	
+//	String name;
+//	public String getName(String id) throws SQLException, DataAccessException{
+//		Criteria criteria=new Criteria(new Column("user","ID"),id,QueryConstants.EQUAL);
+//		DataObject dataobject=DataAccess.get("User",criteria);
+//		Iterator itr=dataobject.getRows("User");
+//		while(itr.hasNext()) {
+//			Row row=(Row)itr.next();
+//			row.get(name);
+//		}
+//		return name;
+//	}
 	String name;
 	public String getName(String id) throws SQLException {
 		String sql="select name from user where id=?";

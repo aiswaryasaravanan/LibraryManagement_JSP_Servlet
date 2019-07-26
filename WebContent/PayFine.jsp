@@ -10,8 +10,7 @@
 
 	<a href="Logout">Logout</a>
 	
-<%-- 	<%		response.setHeader("Cache-Control","no-cache,no-store,must-revalidate"); %>
- --%>	
+	
 	<% 
 		request.getRequestDispatcher("getFine").include(request, response);
 	
@@ -24,8 +23,8 @@
 	<form method="post" action="SetFine">
 		Enter Amount:<br>
 		<input type="text" name="amount"><br>
-<%-- 		<input type="hidden" name="fine" value=<%= fine %> >
- --%>		<input type="submit" value="submit">
+ 		<input type="hidden" name="fine" value=<%= fine %> >
+ 		<input type="submit" value="submit">
 	</form>
 
 </body>

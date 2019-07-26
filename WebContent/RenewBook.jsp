@@ -17,8 +17,8 @@ table,tr,th,td{
 	<%@ page import="java.util.*,bean.transaction.Transaction" %>
 	<%
 		String s;
-		request.setAttribute("status","current");
-		request.getRequestDispatcher("GetMyBook").include(request, response);
+ 		request.setAttribute("status","renew");
+ 		request.getRequestDispatcher("GetMyBook").include(request, response);
 
 		ArrayList<Transaction> transactions=(ArrayList<Transaction>)request.getAttribute("transactions");
 		Iterator itr=transactions.iterator();

@@ -25,16 +25,26 @@ public class UpdateOnReturn extends HttpServlet {
 		TransactionDAO transactiondao=new TransactionDAOImpl();
 		java.sql.Date returnDate=java.sql.Date.valueOf(sdf.format(cal.getTime()));
 		HttpSession session=request.getSession(false);
+
+		if(transactionIds==null) {
+			response.setContentType("text/html");
+			out.println("<script type=\"text/javascript\">");
+			out.print("alert(\"No Books selected\");");
+			out.println("location='StudentHomePage.jsp';");
+			out.println("</script>");
+		}else {
+			try {
+				for(String transactionId : transactionIds) {
+					transactiondao.updateAvailableCount(1,Integer.parseInt(transactionId));
+					transactiondao.updateReturnDate(returnDate,Integer.parseInt(transactionId));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println(e);
+			}response.sendRedirect("StudentHomePage");
+		}
 		
-		try {
-			for(String transactionId : transactionIds) {
-				transactiondao.updateAvailableCount(1,Integer.parseInt(transactionId));
-				transactiondao.updateReturnDate(returnDate,Integer.parseInt(transactionId));
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
-		}response.sendRedirect("StudentHomePage");
+
 	}
 
 }

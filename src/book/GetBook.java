@@ -1,6 +1,7 @@
 package book;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ public class GetBook extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		PrintWriter out=response.getWriter();
 		ArrayList<Book> books=new ArrayList<Book>();
 		BookDAO bookdao=new BookDAOImpl();
 		
@@ -26,8 +28,22 @@ public class GetBook extends HttpServlet {
 
 		try {
 			if(typeOfSearch.equals("byBook")) {
+				if(bookName=="") {
+					response.setContentType("text/html");
+					out.println("<script type=\"text/javascript\">");
+					out.print("alert(\"No book name is specified\");");
+					out.println("location='SearchPage.jsp';");
+					out.println("</script>");
+				}
 				books=bookdao.getAllByBookName(bookName);
 			}else if(typeOfSearch.equals("byAuthor")) {
+				if(authorName=="") {
+					response.setContentType("text/html");
+					out.println("<script type=\"text/javascript\">");
+					out.print("alert(\"No Author name is specified\");");
+					out.println("location='SearchPage.jsp';");
+					out.println("</script>");
+				}
 				books=bookdao.getAllByAuthorName(authorName);
 			}else if(typeOfSearch.equals("allAvailable")) {
 				books=bookdao.getAllAvailableBook("1");

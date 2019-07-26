@@ -24,14 +24,25 @@ public class SetFine extends HttpServlet {
 		PrintWriter out=response.getWriter();
 		UserDAO userdao=new UserDAOImpl();
 		float amount=Float.parseFloat(request.getParameter("amount"));
-		
-		try {
-			userdao.setFine((String)session.getAttribute("id"),amount);
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
+		float fine=Float.parseFloat(request.getParameter("fine"));
+
+		if(amount >0 && amount<=fine) {
+			try {
+				userdao.setFine((String)session.getAttribute("id"),amount);
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println(e);
+			}
+			response.sendRedirect("StudentHomePage");
+		}else {
+			response.setContentType("text/html");
+			out.println("<script type=\"text/javascript\">");
+			out.print("alert(\"Enter valid amount\");");
+			out.println("location='PayFine.jsp';");
+			out.println("</script>");
 		}
-		response.sendRedirect("StudentHomePage");
+		
+
 
 	}
 		

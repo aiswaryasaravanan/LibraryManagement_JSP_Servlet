@@ -20,19 +20,19 @@ table{
 	<%
 		request.setAttribute("bookName",request.getParameter("bookName"));
 		request.setAttribute("authorName",request.getParameter("authorName"));
-		request.setAttribute("typeOfSearch",request.getParameter("typeOfSearch"));	
+		request.setAttribute("typeOfSearch",request.getParameter("typeOfSearch"));
+		
 		request.getRequestDispatcher("GetBook").include(request, response);
-		ArrayList<bean.book.Book> books=(ArrayList<bean.book.Book>)request.getAttribute("books");
+		ArrayList<Book> books=(ArrayList<Book>)request.getAttribute("books");
 		String s;
 		Iterator itr=books.iterator();
 	%>
 	<form action="UpdateOnBorrow" method="post">
 	<table width="100%">
 	<tr><th></th><th>BookId</th><th>BookName</th><th>Author</th><th>AvailableCount</th></tr>
-		<%
+	<%
 		while(itr.hasNext()){
-		bean.book.Book book=(bean.book.Book)itr.next();
-		s=book.getBookId()+"     "+book.getBookName()+"     "+book.getAuthor()+"     "+book.getAvailableCount()+"";
+		Book book=(Book)itr.next();
 	%>
 		<tr>
 			<td><input type="checkbox" name="bookIds" value=<%=book.getBookId() %> ></td>
@@ -42,8 +42,7 @@ table{
 			<td><%=book.getAvailableCount() %></td>
 			
 		</tr>
-<%-- 			<input type="checkbox" name="bookIds" value=<%=book.getBookId() %> > <%= s %><br>
- --%>	<% 
+	<% 
 		}
 	%>
 	</table>

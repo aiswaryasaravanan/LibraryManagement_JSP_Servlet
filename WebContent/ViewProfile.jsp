@@ -16,7 +16,8 @@ table,tr,th,td{
 
 	<a href="Logout">Logout</a>
 
-	<h4>Name:</h4><%=session.getAttribute("name")%><br><br>
+	<h4>Name:</h4><% request.getRequestDispatcher("GetName").include(request,response);%>
+					<%=request.getAttribute("name") %>	<br><br>
 	<h4>Id:</h4><%=session.getAttribute("id")%><br><br>
 	<h4>Books yet to Return:</h4></h4><br>
  

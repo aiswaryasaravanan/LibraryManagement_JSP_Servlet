@@ -15,7 +15,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-//@WebFilter("/RemoveStudent")
 public class IsAdmin implements Filter {
 
 	public void destroy() {

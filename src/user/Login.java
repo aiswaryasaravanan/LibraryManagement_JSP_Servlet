@@ -33,7 +33,16 @@ public class Login extends HttpServlet {
 				RequestDispatcher rd=request.getRequestDispatcher("Navigation");
 				rd.forward(request, response);
 			}else {
-				response.sendRedirect("index.jsp");
+				response.setContentType("text/html");
+				out.println("<script type=\"text/javascript\">");
+				out.print("alert(\"Wrong username or password\");");
+				out.println("location='index.jsp';");
+				out.println("</script>");
+				
+//				out.println("<meta http-equiv='refresh' content='3;URL=index.jsp'>");
+//				out.println("<p style='color:red;'>User or password incorrect!</p>");
+				
+//				response.sendRedirect("index.jsp");
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

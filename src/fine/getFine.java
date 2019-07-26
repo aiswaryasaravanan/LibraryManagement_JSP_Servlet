@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.transaction.*;
 import bean.user.*;
 
 
@@ -24,9 +25,9 @@ public class getFine extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session=request.getSession(false);
 		PrintWriter out=response.getWriter();
-		UserDAO userdao=new UserDAOImpl();
+		TransactionDAO transactiondao=new TransactionDAOImpl();
 		try {
-			fine=userdao.getFine((String) session.getAttribute("id"));
+			fine=transactiondao.getFine((String) session.getAttribute("id"));
 		}catch(Exception e) {
 			e.printStackTrace();
 			System.out.println(e);

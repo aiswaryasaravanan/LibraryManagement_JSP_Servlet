@@ -2,6 +2,7 @@ package bean.transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -45,7 +46,20 @@ public class TransactionDAOImpl implements TransactionDAO{
 		return transactions;	
 	}
 	
-	
+	public ArrayList<Transaction> getBookToRenew(String id){
+		ArrayList<Transaction> transactions=new ArrayList<Transaction>();
+		String sql="select transactionId,book.bookId,bookName,author,transaction.issueDate,transaction.dueDate from book,transaction where book.bookId=transaction.bookId and returnDate is null and transaction.studentId='"+id+"' and date(now())<date(transaction.dueDate) order by dueDate";
+
+		try(Connection con=DataBaseConnection.initializeDB();Statement st=con.createStatement();ResultSet rs=st.executeQuery(sql)){
+			while(rs.next()) {
+				transactions.add(getTransactionObject(rs));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}
+		return transactions;
+	}
 	public ArrayList<Transaction> getIssuedBook() throws Exception{
 		ArrayList<Transaction> transactions=new ArrayList<Transaction>();
 		String sql="select transaction.bookId,bookname,id,name,issueDate,duedate from transaction join book on transaction.bookid=book.bookid join user on transaction.studentId=user.id where returnDate is null";
@@ -105,6 +119,24 @@ public class TransactionDAOImpl implements TransactionDAO{
 			rs.close();
 		}
 		return transactionId;
+	}
+	
+	float fine;
+	public float getFine(String id) throws Exception {
+		String sql="select (select sum(datediff(returndate,duedate)*2) as fineAmount from transaction where studentId='"+id+"' and date(duedate)<date(returndate))-fineAmount from user where id='"+id+"';";		//statement is enough
+		ResultSet rs=null;
+		try(Connection con=DBConnection.DataBaseConnection.initializeDB();Statement st=con.createStatement()){
+			rs=st.executeQuery(sql);
+			while(rs.next())
+				fine=rs.getFloat(1);
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}finally {
+			rs.close();
+		}
+
+		return fine;
 	}
 	public Transaction getTransactionObject(ResultSet rs) throws Exception{
 		Transaction transaction=new Transaction();
